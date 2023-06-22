@@ -11,13 +11,8 @@ export default async (
 ) => {
   const USER_DEFAULT = Role.profile;
 
-  const exist = await userRepository.getByEmail(email);
-
-  if (exist) {
-    throw new Error(ExceptionMessages[ExceptionCode.DUPLICATE_ENTRY]);
-  }
-
   const hashedPassword = bcrypt.hash(password);
+
   const user = new UserEntity(null, firstname, lastname, email, hashedPassword, USER_DEFAULT, gender);
 
   return userRepository.create(user);

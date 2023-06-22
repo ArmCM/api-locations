@@ -1,10 +1,7 @@
 import httpStatus from 'http-status';
 import { Request, Response, NextFunction } from 'express';
-
 import HttpException from '../exceptions/HttpException';
-
 import LocationSerializer from '../serializers/location/LocationSerializer';
-
 import LocationRepositoryMongo from '../../../infrastructure/repositories/location/LocationRepositoryMongo';
 import CreateLocation from '../../../application/use_cases/location/CreateLocation';
 import { Paginate, Pagination } from '../Pagination';

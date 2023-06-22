@@ -1,4 +1,4 @@
-import { User } from '../../../../src/domain/entities/User';
+import { UserEntity } from '../../../../src/domain/entities/User';
 
 import { Pagination } from '../../../../src/interfaces/api/Pagination';
 import { Collection } from '../../../../src/domain/Repository/interfaces/IRead';
@@ -14,8 +14,8 @@ describe('Use Case: GetAllUsers', () => {
     const collection: Collection = {
       count: 2,
       records: [
-        new User(1, 'John', 'Doe', 'john.doe@email.com', 'abcd-1234', 'basic', 'male'),
-        new User(2, 'jane', 'Doe', 'jane.doe@email.com', 'abcd-1234', 'basic', 'femmale')
+        new UserEntity(1, 'John', 'Doe', 'john.doe@email.com', 'abcd-1234', 'basic', 'male'),
+        new UserEntity(2, 'jane', 'Doe', 'jane.doe@email.com', 'abcd-1234', 'basic', 'femmale')
       ]
     };
     mockUserRepository.find = jest.fn((): Promise<Collection> => {

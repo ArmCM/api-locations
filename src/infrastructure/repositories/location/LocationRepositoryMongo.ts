@@ -10,26 +10,46 @@ export default class LocationRepositoryMongo extends ILocationRepository {
 
   async find(filters = [], pagination: Pagination): Promise<Collection> {
     const count = await LocationSchema.countDocuments();
-    const mongooseUsers = await LocationSchema.find()
+    const mongooseLocations = await LocationSchema.find()
       .skip(pagination.offset)
       .limit(pagination.limit)
       .sort({ createdAt: 0 });
 
-    const records = mongooseUsers.map(mongooseUser => {
+    const records = mongooseLocations.map(mongooseLocation => {
       return new LocationEntity(
-        mongooseUser.id,
-        mongooseUser.name,
-        mongooseUser.longitude,
-        mongooseUser.latitude,
-        mongooseUser.address,
-        mongooseUser.phone,
-        mongooseUser.mail,
-        mongooseUser.opinions,
-        mongooseUser.storeHours
+        mongooseLocation.id,
+        mongooseLocation.name,
+        mongooseLocation.longitude,
+        mongooseLocation.latitude,
+        mongooseLocation.address,
+        mongooseLocation.phone,
+        mongooseLocation.mail,
+        mongooseLocation.opinions,
+        mongooseLocation.storeHours
       );
     });
 
     return { count, records };
+  }
+
+  async get(locationId: string | number): Promise<LocationEntity | boolean> {
+    const mongooseLocation = await LocationSchema.findById(locationId);
+
+    if (!mongooseLocation) {
+      return false;
+    }
+
+    return new LocationEntity(
+      mongooseLocation.id,
+      mongooseLocation.name,
+      mongooseLocation.longitude,
+      mongooseLocation.latitude,
+      mongooseLocation.address,
+      mongooseLocation.phone,
+      mongooseLocation.mail,
+      mongooseLocation.opinions,
+      mongooseLocation.storeHours,
+    );
   }
 
   async create(location: ILocation): Promise<LocationEntity> {

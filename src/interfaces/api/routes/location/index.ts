@@ -142,6 +142,38 @@ export default class LocationRouter implements IRoute {
 
     /**
      * @swagger
+     * /api/v1/location/{id}:
+     *  get:
+     *    summary: Get a location by id
+     *    tags:
+     *      - Location
+     *    parameters:
+     *      - in: path
+     *        name: id
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The location id.
+     *    produces:
+     *      - application/json
+     *    responses:
+     *      200:
+     *        description: The location information.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Location"
+     *      401:
+     *        description: Authorization information is missing or invalid.
+     *      404:
+     *        description: A user not found.
+     *      50X:
+     *        description: Unexpected error.
+     */
+    this.router.get(`${this.path}/:id`, this.routeController.getLocation);
+
+    /**
+     * @swagger
      *
      * /api/v1/location:
      *  post:

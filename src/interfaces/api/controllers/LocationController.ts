@@ -9,8 +9,22 @@ import LocationRepositoryMongo from '../../../infrastructure/repositories/locati
 import CreateLocation from '../../../application/use_cases/location/CreateLocation';
 import { Paginate, Pagination } from '../Pagination';
 import GetAllLocations from '../../../application/use_cases/location/GetAllLocations';
+import GetLocation from '../../../application/use_cases/location/GetLocation';
 
 export default class LocationController {
+  async getLocation(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+
+    try {
+      const user = await GetLocation(id, new LocationRepositoryMongo());
+      const locationSerializer = LocationSerializer.getInstance();
+
+      res.send(locationSerializer.singleSerialize(user));
+    } catch (error) {
+      next(new HttpException(httpStatus.NOT_FOUND, error.message));
+    }
+  }
+
   async getAllLocations(req: Request, res: Response) {
     console.log('get all locations:');
     const { page, limit } = req.query;

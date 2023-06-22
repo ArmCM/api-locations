@@ -86,6 +86,76 @@ export default class UserRouter implements IRoute {
   private initializeRoutes() {
     /**
      * @swagger
+     *
+     * /users:
+     *  get:
+     *    summary: Lists all the users
+     *    security:
+     *      - jwt: []
+     *    tags:
+     *      - User
+     *    produces:
+     *      - application/json
+     *    parameters:
+     *      - in: query
+     *        name: page
+     *        description: Number of page
+     *        type: integer
+     *        minimum: 1
+     *        default: 1
+     *      - in: query
+     *        name: limit
+     *        description: Number of user to return
+     *        type: integer
+     *        minimum: 10
+     *        maximum: 100
+     *        enum:
+     *          10
+     *          20
+     *          50
+     *          100
+     *        default: 10
+     *      - in: query
+     *        name: filter
+     *        description: Options for filtering the results
+     *        type: object
+     *        style: deepObject
+     *        explode: true
+     *    responses:
+     *      200:
+     *        description: The list of users.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              type: array
+     *              items:
+     *                $ref: "#/definitions/User"
+     *      400:
+     *        description: Bad request.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     *      401:
+     *        description: Authorization information is missing or invalid.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     *      50X:
+     *        description: Unexpected error.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     */
+    this.router.get(
+      this.path,
+      [AuthMiddleware, grantAccessMiddleware('readAny', 'profile')],
+      this.routeController.getAllUsers
+    );
+    /**
+     * @swagger
      * /users:
      *  post:
      *    summary: Create a new user
@@ -116,4 +186,149 @@ export default class UserRouter implements IRoute {
      *              $ref: "#/definitions/Response"
      */
     this.router.post(this.path, validationMiddleware(CreateUser), this.routeController.createUser);
+
+    /**
+     * @swagger
+     * /users/{id}:
+     *  get:
+     *    summary: Get a user by id
+     *    tags:
+     *      - User
+     *    parameters:
+     *      - in: path
+     *        name: id
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The user id.
+     *    produces:
+     *      - application/json
+     *    responses:
+     *      200:
+     *        description: The user information.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/User"
+     *      401:
+     *        description: Authorization information is missing or invalid.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     *      404:
+     *        description: A user not found.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     *      50X:
+     *        description: Unexpected error.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     */
+    this.router.get(
+      `${this.path}/:id`,
+      [AuthMiddleware, grantAccessMiddleware('readAny', 'profile')],
+      this.routeController.getUser
+    );
+
+    /**
+     * @swagger
+     * /users/{id}:
+     *  put:
+     *    summary: Updates a user
+     *    tags:
+     *      - User
+     *    parameters:
+     *      - in: path
+     *        name: id
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The user id.
+     *    requestBody:
+     *      required: true
+     *      content:
+     *        application/json:
+     *          schema:
+     *            $ref: "#/definitions/UserUpdate"
+     *    responses:
+     *      204:
+     *        description: Update was successful.
+     *      400:
+     *        description: Bad request.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     *      401:
+     *        description: Authorization information is missing or invalid.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     *      404:
+     *        description: A user not found.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     *      50X:
+     *        description: Unexpected error.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     */
+    this.router.put(
+      `${this.path}/:id`,
+      [AuthMiddleware, grantAccessMiddleware('updateAny', 'profile'), validationMiddleware(UpdateUser, true)],
+      this.routeController.updateUser
+    );
+
+    /**
+     * @swagger
+     * /users/{id}:
+     *  delete:
+     *    summary: Deletes a user by id
+     *    tags:
+     *      - User
+     *    parameters:
+     *      - in: path
+     *        name: id
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The user id.
+     *    responses:
+     *      204:
+     *        description: The resource was deleted successfully.
+     *      401:
+     *        description: Authorization information is missing or invalid.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     *      404:
+     *        description: A user not found.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     *      50X:
+     *        description: Unexpected error.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              $ref: "#/definitions/Response"
+     */
+    this.router.delete(
+      `${this.path}/:id`,
+      [AuthMiddleware, grantAccessMiddleware('deleteAny', 'profile')],
+      this.routeController.deleteUser
+    );
+  }
 }

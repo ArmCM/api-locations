@@ -29,4 +29,50 @@ export default class UserController {
       next(new HttpException(httpStatus.INTERNAL_SERVER_ERROR, error.message));
     }
   }
+
+  async getUser(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+
+    try {
+      const user = await GetUser(id, new UserRepositoryMongo());
+      const userSerializer = UserSerializer.getInstance();
+
+      res.send(userSerializer.singleSerialize(user));
+    } catch (error) {
+      next(new HttpException(httpStatus.NOT_FOUND, error.message));
+    }
+  }
+
+  async getAllUsers(req: Request, res: Response) {
+    const { page, limit } = req.query;
+    const pagination = Pagination(+page, +limit);
+    const userSerializer = UserSerializer.getInstance();
+
+    const users = await GetAllUsers(pagination, new UserRepositoryMongo());
+
+    return res.send(Paginate(users, userSerializer, +page, +limit));
+  }
+
+  async updateUser(req: Request, res: Response, next: NextFunction) {
+    const { params, body } = req;
+
+    try {
+      await UpdateUser(params.id, body, new UserRepositoryMongo());
+
+      return res.status(httpStatus.NO_CONTENT).send();
+    } catch (error) {
+      next(new HttpException(httpStatus.NOT_FOUND, error.message));
+    }
+  }
+
+  async deleteUser(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+
+    try {
+      await RemoveUser(id, new UserRepositoryMongo());
+      return res.status(httpStatus.NO_CONTENT).send();
+    } catch (error) {
+      next(new HttpException(httpStatus.NOT_FOUND, error.message));
+    }
+  }
 }

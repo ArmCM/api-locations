@@ -16,7 +16,7 @@ export interface IPaginate {
  * Retrive parameters for pagination limit and offset
  *
  * @param page Current page
- * @param limit Limit per page
+ * @param pageSize
  * @returns
  */
 export function Pagination(page = 1, pageSize = 20): IPagination {

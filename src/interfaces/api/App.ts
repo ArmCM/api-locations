@@ -6,8 +6,8 @@ import express from 'express';
 import compress from 'compression';
 import swaggerUi from 'swagger-ui-express';
 
-import Router from './Router';
-import swaggerSpecs from './plugins/swagger';
+import Router_ from './Router_';
+import swaggerSpecs from './plugins/swagger/index_';
 import errorMiddleware from './middleware/Error';
 
 class App {
@@ -68,7 +68,7 @@ class App {
   }
 
   private initRouters(): void {
-    Router().forEach(({ router }) => this.app.use('/', router));
+    Router_().forEach(({ router }) => this.app.use('/', router));
   }
 }
 

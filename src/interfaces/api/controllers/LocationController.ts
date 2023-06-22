@@ -7,8 +7,20 @@ import LocationSerializer from '../serializers/location/LocationSerializer';
 
 import LocationRepositoryMongo from '../../../infrastructure/repositories/location/LocationRepositoryMongo';
 import CreateLocation from '../../../application/use_cases/location/CreateLocation';
+import { Paginate, Pagination } from '../Pagination';
+import GetAllLocations from '../../../application/use_cases/location/GetAllLocations';
 
 export default class LocationController {
+  async getAllLocations(req: Request, res: Response) {
+    console.log('get all locations:');
+    const { page, limit } = req.query;
+    const pagination = Pagination(+page, +limit);
+    const locationSerializer = LocationSerializer.getInstance();
+
+    const locations = await GetAllLocations(pagination, new LocationRepositoryMongo());
+
+    return res.send(Paginate(locations, locationSerializer, +page, +limit));
+  }
   async createLocation(req: Request, res: Response, next: NextFunction): Promise<any> {
     const { body } = req;
 

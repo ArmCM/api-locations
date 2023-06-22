@@ -5,6 +5,8 @@ import IRoute from '../IRoute';
 import LocationController from '../../controllers/LocationController';
 import validationMiddleware from '../../middleware/Validation';
 import { CreateLocation } from '../../validation/location';
+import AuthMiddleware from "../../middleware/Auth";
+import grantAccessMiddleware from "../../middleware/GrandAccess";
 
 export default class LocationRouter implements IRoute {
   public path = '/api/v1/location';
@@ -83,6 +85,61 @@ export default class LocationRouter implements IRoute {
    *        default: 10am - 11pm
    */
   private initializeRoutes() {
+    /**
+     * @swagger
+     *
+     * /api/v1/location:
+     *  get:
+     *    summary: Lists all locations
+     *    security:
+     *      - jwt: []
+     *    tags:
+     *      - Location
+     *    produces:
+     *      - application/json
+     *    parameters:
+     *      - in: query
+     *        name: page
+     *        description: Number of page
+     *        type: integer
+     *        minimum: 1
+     *        default: 1
+     *      - in: query
+     *        name: limit
+     *        description: Number of user to return
+     *        type: integer
+     *        minimum: 10
+     *        maximum: 100
+     *        enum:
+     *          10
+     *          20
+     *          50
+     *          100
+     *        default: 10
+     *      - in: query
+     *        name: filter
+     *        description: Options for filtering the results
+     *        type: object
+     *        style: deepObject
+     *        explode: true
+     *    responses:
+     *      200:
+     *        description: The list of users.
+     *        content:
+     *          application/json:
+     *            schema:
+     *              type: array
+     *              items:
+     *                $ref: "#/definitions/Location"
+     *      400:
+     *        description: Bad request.
+     *      401:
+     *        description: Authorization information is missing or invalid.
+     *      50X:
+     *        description: Unexpected error.
+     */
+    this.router.get(this.path, this.routeController.getAllLocations);
+
     /**
      * @swagger
      *

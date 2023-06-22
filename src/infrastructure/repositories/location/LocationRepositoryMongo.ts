@@ -8,6 +8,30 @@ export default class LocationRepositoryMongo extends ILocationRepository {
     super();
   }
 
+  async find(filters = [], pagination: Pagination): Promise<Collection> {
+    const count = await LocationSchema.countDocuments();
+    const mongooseUsers = await LocationSchema.find()
+      .skip(pagination.offset)
+      .limit(pagination.limit)
+      .sort({ createdAt: 0 });
+
+    const records = mongooseUsers.map(mongooseUser => {
+      return new LocationEntity(
+        mongooseUser.id,
+        mongooseUser.name,
+        mongooseUser.longitude,
+        mongooseUser.latitude,
+        mongooseUser.address,
+        mongooseUser.phone,
+        mongooseUser.mail,
+        mongooseUser.opinions,
+        mongooseUser.storeHours
+      );
+    });
+
+    return { count, records };
+  }
+
   async create(location: ILocation): Promise<LocationEntity> {
     const { name,
       longitude,

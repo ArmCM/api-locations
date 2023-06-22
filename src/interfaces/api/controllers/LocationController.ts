@@ -10,6 +10,7 @@ import CreateLocation from '../../../application/use_cases/location/CreateLocati
 import { Paginate, Pagination } from '../Pagination';
 import GetAllLocations from '../../../application/use_cases/location/GetAllLocations';
 import GetLocation from '../../../application/use_cases/location/GetLocation';
+import UpdateLocation from '../../../application/use_cases/location/UpdateLocation';
 
 export default class LocationController {
   async getLocation(req: Request, res: Response, next: NextFunction) {
@@ -35,6 +36,7 @@ export default class LocationController {
 
     return res.send(Paginate(locations, locationSerializer, +page, +limit));
   }
+
   async createLocation(req: Request, res: Response, next: NextFunction): Promise<any> {
     const { body } = req;
 
@@ -45,6 +47,18 @@ export default class LocationController {
       return res.status(httpStatus.CREATED).send(locationSerializer.singleSerialize(location));
     } catch (error) {
       next(new HttpException(httpStatus.INTERNAL_SERVER_ERROR, error.message));
+    }
+  }
+
+  async updateLocation(req: Request, res: Response, next: NextFunction) {
+    const { params, body } = req;
+
+    try {
+      await UpdateLocation(params.id, body, new LocationRepositoryMongo());
+
+      return res.status(httpStatus.NO_CONTENT).send();
+    } catch (error) {
+      next(new HttpException(httpStatus.NOT_FOUND, error.message));
     }
   }
 }

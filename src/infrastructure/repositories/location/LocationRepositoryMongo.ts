@@ -88,4 +88,29 @@ export default class LocationRepositoryMongo extends ILocationRepository {
       mongooseLocation.storeHours
     );
   }
+
+  async update(location: ILocation): Promise<boolean> {
+    const { id, name, longitude, latitude, address, mail, opinions, phone, storeHours } = location;
+    const mongooseLocation = await LocationSchema.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          name,
+          longitude,
+          latitude,
+          address,
+          mail,
+          opinions,
+          phone,
+          storeHours
+        }
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    return Boolean(mongooseLocation);
+  }
 }

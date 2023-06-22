@@ -83,6 +83,32 @@ export default class LocationRouter implements IRoute {
    *      storeHours:
    *        type: string
    *        default: 10am - 11pm
+   *  LocationUpdate:
+   *   properties:
+   *      name:
+   *        type: string
+   *        default: john
+   *      longitude:
+   *        type: string
+   *        default: -99.15702
+   *      latitude:
+   *        type: string
+   *        default: 19.425136
+   *      address:
+   *        type: string
+   *        default: Avenida Chapultepec 157, Colonia Juárez, 06600 Ciudad de México, México
+   *      mail:
+   *        type: string
+   *        default: john@example.com
+   *      opinions:
+   *        type: string
+   *        defualt: nice place
+   *      phone:
+   *        type: string
+   *        default: 5544332233
+   *      storeHours:
+   *        type: string
+   *        default: 10am - 11pm
    */
   private initializeRoutes() {
     /**
@@ -171,6 +197,40 @@ export default class LocationRouter implements IRoute {
      *        description: Unexpected error.
      */
     this.router.get(`${this.path}/:id`, this.routeController.getLocation);
+
+    /**
+     * @swagger
+     * /api/v1/location/{id}:
+     *  put:
+     *    summary: Update location
+     *    tags:
+     *      - Location
+     *    parameters:
+     *      - in: path
+     *        name: id
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The user id.
+     *    requestBody:
+     *      required: true
+     *      content:
+     *        application/json:
+     *          schema:
+     *            $ref: "#/definitions/LocationUpdate"
+     *    responses:
+     *      204:
+     *        description: Update was successful.
+     *      400:
+     *        description: Bad request.
+     *      401:
+     *        description: Authorization information is missing or invalid.
+     *      404:
+     *        description: A user not found.
+     *      50X:
+     *        description: Unexpected error.
+     */
+    this.router.put(`${this.path}/:id`, this.routeController.updateLocation);
 
     /**
      * @swagger

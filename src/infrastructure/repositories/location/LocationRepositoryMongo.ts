@@ -113,4 +113,10 @@ export default class LocationRepositoryMongo extends ILocationRepository {
 
     return Boolean(mongooseLocation);
   }
+
+  async remove(locationId: string | number): Promise<boolean> {
+    const mongooseLocation = await LocationSchema.findByIdAndDelete(locationId);
+
+    return Boolean(mongooseLocation);
+  }
 }

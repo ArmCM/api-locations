@@ -257,5 +257,31 @@ export default class LocationRouter implements IRoute {
      *        description: Unexpected error.
      */
     this.router.post(this.path, validationMiddleware(CreateLocation), this.routeController.createLocation);
+
+    /**
+     * @swagger
+     * /api/v1/location/{id}:
+     *  delete:
+     *    summary: Deletes a location by id
+     *    tags:
+     *      - Location
+     *    parameters:
+     *      - in: path
+     *        name: id
+     *        schema:
+     *          type: string
+     *        required: true
+     *        description: The user id.
+     *    responses:
+     *      204:
+     *        description: The resource was deleted successfully.
+     *      401:
+     *        description: Authorization information is missing or invalid.
+     *      404:
+     *        description: A user not found.
+     *      50X:
+     *        description: Unexpected error.
+     */
+    this.router.delete(`${this.path}/:id`, this.routeController.deleteLocation);
   }
 }

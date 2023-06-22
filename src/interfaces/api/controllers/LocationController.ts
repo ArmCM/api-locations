@@ -11,6 +11,7 @@ import { Paginate, Pagination } from '../Pagination';
 import GetAllLocations from '../../../application/use_cases/location/GetAllLocations';
 import GetLocation from '../../../application/use_cases/location/GetLocation';
 import UpdateLocation from '../../../application/use_cases/location/UpdateLocation';
+import RemoveLocation from '../../../application/use_cases/location/RemoveLocation';
 
 export default class LocationController {
   async getLocation(req: Request, res: Response, next: NextFunction) {
@@ -56,6 +57,17 @@ export default class LocationController {
     try {
       await UpdateLocation(params.id, body, new LocationRepositoryMongo());
 
+      return res.status(httpStatus.NO_CONTENT).send();
+    } catch (error) {
+      next(new HttpException(httpStatus.NOT_FOUND, error.message));
+    }
+  }
+
+  async deleteLocation(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+
+    try {
+      await RemoveLocation(id, new LocationRepositoryMongo());
       return res.status(httpStatus.NO_CONTENT).send();
     } catch (error) {
       next(new HttpException(httpStatus.NOT_FOUND, error.message));

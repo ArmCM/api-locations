@@ -5,8 +5,9 @@ import IRoute from '../IRoute';
 import LocationController from '../../controllers/LocationController';
 import validationMiddleware from '../../middleware/Validation';
 import { CreateLocation } from '../../validation/location';
-import AuthMiddleware from "../../middleware/Auth";
-import grantAccessMiddleware from "../../middleware/GrandAccess";
+import AuthMiddleware from '../../middleware/Auth';
+import grantAccessMiddleware from '../../middleware/GrandAccess';
+import { UpdateLocation } from '../../validation/location/Update';
 
 export default class LocationRouter implements IRoute {
   public path = '/api/v1/location';
@@ -45,7 +46,7 @@ export default class LocationRouter implements IRoute {
    *      address:
    *        type: string
    *        default: Avenida Chapultepec 157, Colonia Juárez, 06600 Ciudad de México, México
-   *      mail:
+   *      email:
    *        type: string
    *        default: john@example.com
    *      opinions:
@@ -71,7 +72,7 @@ export default class LocationRouter implements IRoute {
    *      address:
    *        type: string
    *        default: Avenida Chapultepec 157, Colonia Juárez, 06600 Ciudad de México, México
-   *      mail:
+   *      email:
    *        type: string
    *        default: john@example.com
    *      opinions:
@@ -97,7 +98,7 @@ export default class LocationRouter implements IRoute {
    *      address:
    *        type: string
    *        default: Avenida Chapultepec 157, Colonia Juárez, 06600 Ciudad de México, México
-   *      mail:
+   *      email:
    *        type: string
    *        default: john@example.com
    *      opinions:
@@ -196,7 +197,11 @@ export default class LocationRouter implements IRoute {
      *      50X:
      *        description: Unexpected error.
      */
-    this.router.get(`${this.path}/:id`, this.routeController.getLocation);
+    this.router.get(
+      `${this.path}/:id`,
+      [AuthMiddleware, grantAccessMiddleware('readAny', 'profile')],
+      this.routeController.getLocation
+    );
 
     /**
      * @swagger
@@ -230,7 +235,11 @@ export default class LocationRouter implements IRoute {
      *      50X:
      *        description: Unexpected error.
      */
-    this.router.put(`${this.path}/:id`, this.routeController.updateLocation);
+    this.router.put(
+      `${this.path}/:id`,
+      [AuthMiddleware, grantAccessMiddleware('updateAny', 'profile'), validationMiddleware(UpdateLocation, true)],
+      this.routeController.updateLocation
+    );
 
     /**
      * @swagger
@@ -282,6 +291,10 @@ export default class LocationRouter implements IRoute {
      *      50X:
      *        description: Unexpected error.
      */
-    this.router.delete(`${this.path}/:id`, this.routeController.deleteLocation);
+    this.router.delete(
+      `${this.path}/:id`,
+      [AuthMiddleware, grantAccessMiddleware('deleteAny', 'profile')],
+      this.routeController.deleteLocation
+    );
   }
 }

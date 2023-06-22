@@ -35,7 +35,7 @@ export default class LocationSerializer implements IBaseSerializer {
       longitude: entity.longitude,
       latitude: entity.latitude,
       address: entity.address,
-      mail: entity.mail,
+      email: entity.email,
       opinions: entity.opinions,
       phone: entity.phone,
       storeHours: entity.storeHours

@@ -5,7 +5,7 @@ import { ExceptionCode, ExceptionMessages } from '../../../domain/exceptions/Exc
 
 export default async (
   id: string | number,
-  { name, longitude, latitude, address, mail, opinions, phone, storeHours },
+  { name, longitude, latitude, address, email, opinions, phone, storeHours },
   locationRepository: ILocationRepository
 ) => {
   const exist: any | LocationEntity = await locationRepository.get(id);
@@ -20,10 +20,10 @@ export default async (
     longitude || exist.longitude,
     latitude || exist.latitude,
     address || exist.address,
-    mail || exist.mail,
+    email || exist.email,
     opinions || exist.opinions,
     phone || exist.phone,
-    storeHours || exist.storeHours,
+    storeHours || exist.storeHours
   );
 
   const updated = await locationRepository.update(location);

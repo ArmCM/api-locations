@@ -5,7 +5,7 @@ import { ILocationRepository } from '../../../domain/Repository/location/ILocati
 import { ExceptionCode, ExceptionMessages } from '../../../domain/exceptions/ExceptionMessages';
 
 export default async (
-  { name, longitude, latitude, address, mail, opinions, phone, storeHours },
+  { name, longitude, latitude, address, email, opinions, phone, storeHours },
   locationRepository: ILocationRepository
 ) => {
   //const exist = await locationRepository.getById('');
@@ -14,7 +14,7 @@ export default async (
   //   throw new Error(ExceptionMessages[ExceptionCode.DUPLICATE_ENTRY]);
   // }
 
-  const location = new LocationEntity(null, name, longitude, latitude, address, mail, opinions, phone, storeHours);
+  const location = new LocationEntity(null, name, longitude, latitude, address, email, opinions, phone, storeHours);
 
   return locationRepository.create(location);
 };

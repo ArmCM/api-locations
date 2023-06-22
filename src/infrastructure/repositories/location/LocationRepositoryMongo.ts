@@ -23,7 +23,7 @@ export default class LocationRepositoryMongo extends ILocationRepository {
         mongooseLocation.latitude,
         mongooseLocation.address,
         mongooseLocation.phone,
-        mongooseLocation.mail,
+        mongooseLocation.email,
         mongooseLocation.opinions,
         mongooseLocation.storeHours
       );
@@ -46,7 +46,7 @@ export default class LocationRepositoryMongo extends ILocationRepository {
       mongooseLocation.latitude,
       mongooseLocation.address,
       mongooseLocation.phone,
-      mongooseLocation.mail,
+      mongooseLocation.email,
       mongooseLocation.opinions,
       mongooseLocation.storeHours,
     );
@@ -57,7 +57,7 @@ export default class LocationRepositoryMongo extends ILocationRepository {
       longitude,
       latitude,
       address,
-      mail,
+      email,
       opinions,
       phone,
       storeHours
@@ -68,7 +68,7 @@ export default class LocationRepositoryMongo extends ILocationRepository {
       longitude,
       latitude,
       address,
-      mail,
+      email,
       opinions,
       phone,
       storeHours
@@ -82,7 +82,7 @@ export default class LocationRepositoryMongo extends ILocationRepository {
       mongooseLocation.longitude,
       mongooseLocation.latitude,
       mongooseLocation.address,
-      mongooseLocation.mail,
+      mongooseLocation.email,
       mongooseLocation.opinions,
       mongooseLocation.phone,
       mongooseLocation.storeHours
@@ -90,7 +90,7 @@ export default class LocationRepositoryMongo extends ILocationRepository {
   }
 
   async update(location: ILocation): Promise<boolean> {
-    const { id, name, longitude, latitude, address, mail, opinions, phone, storeHours } = location;
+    const { id, name, longitude, latitude, address, email, opinions, phone, storeHours } = location;
     const mongooseLocation = await LocationSchema.findByIdAndUpdate(
       id,
       {
@@ -99,7 +99,7 @@ export default class LocationRepositoryMongo extends ILocationRepository {
           longitude,
           latitude,
           address,
-          mail,
+          email,
           opinions,
           phone,
           storeHours

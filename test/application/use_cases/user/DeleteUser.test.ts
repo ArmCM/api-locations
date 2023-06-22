@@ -10,7 +10,7 @@ describe('Use Case: RemoveUser', () => {
   test('should resolve deleted user', async () => {
     // given
     mockUserRepository.get = jest.fn((): Promise<User | boolean> => {
-      return Promise.resolve(new User(123, 'joe', 'doe', 'john@mail.com', 'abcd-1234', 'profile', 'male'));
+      return Promise.resolve(new User(123, 'joe', 'doe', 'john@email.com', 'abcd-1234', 'profile', 'male'));
     });
     mockUserRepository.remove = jest.fn((): Promise<boolean> => Promise.resolve(true));
 

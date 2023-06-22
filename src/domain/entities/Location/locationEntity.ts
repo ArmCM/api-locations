@@ -7,7 +7,7 @@ export class LocationEntity extends EntityBase implements ILocation {
   longitude: string;
   latitude: string;
   address: string;
-  mail: string;
+  email: string;
   opinions: string;
   phone: string;
   storeHours: string;
@@ -18,7 +18,7 @@ export class LocationEntity extends EntityBase implements ILocation {
     longitude: string,
     latitude: string,
     address: string,
-    mail: string,
+    email: string,
     opinions: string,
     phone: string,
     storeHours: string
@@ -30,7 +30,7 @@ export class LocationEntity extends EntityBase implements ILocation {
     this.longitude = longitude;
     this.latitude = latitude;
     this.address = address;
-    this.mail = mail;
+    this.email = email;
     this.opinions = opinions;
     this.phone = phone;
     this.storeHours = storeHours;

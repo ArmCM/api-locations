@@ -8,7 +8,7 @@ export interface ILocation {
   latitude: string;
   address: string;
   phone: string;
-  mail: string;
+  email: string;
   opinions: string;
   storeHours: string;
 }

@@ -52,7 +52,7 @@ describe('Use Case: CreateUser', () => {
         {
           firstname: 'joe',
           lastname: 'doe',
-          email: 'john@mail.com',
+          email: 'john@email.com',
           password: 'abcd-1234',
           gender: 'male'
         },

@@ -19,7 +19,7 @@ export class CreateLocation {
 
   @IsString()
   @IsNotEmpty()
-  mail: string;
+  email: string;
 
   @IsString()
   @IsNotEmpty()

@@ -32,7 +32,7 @@ export default class UserRouter implements IRoute {
      *    properties:
      *      email:
      *        type: string
-     *        default: john_doe@mail.com
+     *        default: john_doe@email.com
      *      password:
      *        type: string
      *        default: John_123
@@ -53,22 +53,10 @@ export default class UserRouter implements IRoute {
      *    responses:
      *      200:
      *        description: Successful login.
-     *        content:
-     *          application/json:
-     *            schema:
-     *              $ref: "#/definitions/SucessTokenResponse"
      *      400:
      *        description: Bad request.
-     *        content:
-     *          application/json:
-     *            schema:
-     *              $ref: "#/definitions/Response"
      *      50X:
      *        description: Unexpected error.
-     *        content:
-     *          application/json:
-     *            schema:
-     *              $ref: "#/definitions/Response"
      */
     this.router.post(`${this.path}/login`, validationMiddleware(Login), this.routeController.getAuthorization);
   }
